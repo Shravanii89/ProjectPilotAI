@@ -1,0 +1,131 @@
+.recent-table-card {
+  padding: 24px;
+  margin-top: 24px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.table-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.table-subtitle {
+  font-size: 0.8125rem;
+  color: var(--color-subtext);
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.8125rem;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.recent-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.recent-table th {
+  padding: 12px 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-subtext);
+  border-bottom: 1px solid var(--color-border);
+  background: rgba(248, 246, 241, 0.5);
+}
+
+.recent-table td {
+  padding: 16px;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.recent-table tbody tr {
+  transition: var(--transition);
+}
+
+.recent-table tbody tr:hover {
+  background: rgba(79, 70, 229, 0.02);
+}
+
+.project-name-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-name {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.project-id {
+  font-size: 0.75rem;
+  color: var(--color-subtext);
+}
+
+.category-pill {
+  font-size: 0.75rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-weight: 500;
+  border: 1px solid var(--color-border);
+}
+
+.score-value {
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.score-value.high {
+  color: var(--color-success);
+}
+
+.score-value.medium {
+  color: var(--color-warning);
+}
+
+.score-value.low {
+  color: var(--color-danger);
+}
+
+.status-badge {
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge.verified {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--color-success);
+}
+
+.status-badge.flagged {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--color-warning);
+}
+
+.status-badge.high-conflict {
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--color-danger);
+}

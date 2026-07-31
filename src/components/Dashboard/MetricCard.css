@@ -1,0 +1,78 @@
+.metric-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.metric-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-subtext);
+}
+
+.metric-icon-bg {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.metric-icon-bg.primary {
+  background: rgba(79, 70, 229, 0.1);
+  color: var(--color-primary);
+}
+
+.metric-icon-bg.secondary {
+  background: rgba(109, 40, 217, 0.1);
+  color: var(--color-secondary);
+}
+
+.metric-icon-bg.accent {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--color-accent);
+}
+
+.metric-icon-bg.success {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--color-success);
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.metric-change {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.metric-change.up {
+  color: var(--color-success);
+}
+
+.metric-change.down {
+  color: var(--color-danger);
+}
+
+.metric-period {
+  color: var(--color-subtext);
+  font-weight: 400;
+}
