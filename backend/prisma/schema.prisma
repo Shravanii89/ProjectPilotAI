@@ -1,0 +1,158 @@
+// Prisma Schema for ProjectPilot AI PostgreSQL Database
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── 1. Users Table ──
+model User {
+  id          String   @id @default(uuid())
+  firebaseUid String   @unique @map("firebase_uid")
+  email       String   @unique
+  name        String?
+  avatar      String?
+  role        String   @default("user")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  projects  Project[]
+  histories History[]
+
+  @@map("users")
+}
+
+// ── 2. Projects Table ──
+model Project {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  title        String
+  description  String   @db.Text
+  domain       String
+  competition  String   @default("medium") // low, medium, high
+  documentPath String?  @map("document_path")
+  documentName String?  @map("document_name")
+  status       String   @default("pending") // pending, analyzing, completed, failed
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  analysisReports AnalysisReport[]
+  histories       History[]
+
+  @@index([userId])
+  @@map("projects")
+}
+
+// ── 3. AnalysisReports Table ──
+model AnalysisReport {
+  id               String   @id @default(uuid())
+  projectId        String   @map("project_id")
+  innovationScore  Int      @map("innovation_score")
+  feasibilityScore Int?     @map("feasibility_score")
+  marketScore      Int?     @map("market_score")
+  overallScore     Int      @map("overall_score")
+  summary          String?  @db.Text
+  patentSummary    Json?    @map("patent_summary")
+  paperSummary     Json?    @map("paper_summary")
+  recommendations  Json?
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  project       Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  searchResults SearchResult[]
+
+  @@index([projectId])
+  @@map("analysis_reports")
+}
+
+// ── 4. SearchResults Table ──
+model SearchResult {
+  id             String   @id @default(uuid())
+  reportId       String   @map("report_id")
+  source         String   // 'patent', 'paper', 'github'
+  title          String
+  url            String?
+  relevanceScore Float?   @map("relevance_score")
+  snippet        String?  @db.Text
+  metadata       Json?
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  report AnalysisReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@index([reportId])
+  @@map("search_results")
+}
+
+// ── 5. History Table ──
+model History {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  projectId String   @map("project_id")
+  action    String   // 'analysis_created', 'analysis_viewed', 'analysis_deleted'
+  status    String   @default("completed")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([projectId])
+  @@map("history")
+}
+
+// ── 6. GitHubSearchCache Table ──
+model GitHubSearchCache {
+  id           String   @id @default(uuid())
+  queryHash    String   @unique @map("query_hash")
+  query        String
+  totalCount   Int      @default(0) @map("total_count")
+  repositories Json
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("github_search_cache")
+}
+
+// ── 7. PaperSearchCache Table ──
+model PaperSearchCache {
+  id         String   @id @default(uuid())
+  queryHash  String   @unique @map("query_hash")
+  query      String
+  totalCount Int      @default(0) @map("total_count")
+  papers     Json
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("paper_search_cache")
+}
+
+// ── 8. PatentSearchCache Table ──
+model PatentSearchCache {
+  id         String   @id @default(uuid())
+  queryHash  String   @unique @map("query_hash")
+  query      String
+  totalCount Int      @default(0) @map("total_count")
+  patents    Json
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("patent_search_cache")
+}
+
+// ── 9. StartupSearchCache Table ──
+model StartupSearchCache {
+  id                String   @id @default(uuid())
+  queryHash         String   @unique @map("query_hash")
+  query             String
+  startups          Json
+  hackathonProjects Json     @map("hackathon_projects")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("startup_search_cache")
+}

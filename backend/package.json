@@ -1,0 +1,40 @@
+{
+  "name": "projectpilot-ai-backend",
+  "version": "1.0.0",
+  "description": "ProjectPilot AI – Express.js Backend API",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "projectpilot",
+    "ai",
+    "express",
+    "api"
+  ],
+  "author": "ProjectPilot Team",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@google/genai": "^2.15.0",
+    "@prisma/client": "^6.19.3",
+    "@xenova/transformers": "^2.17.2",
+    "axios": "^1.19.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.2",
+    "firebase-admin": "^14.2.0",
+    "helmet": "^8.3.0",
+    "morgan": "^1.11.0",
+    "multer": "^2.2.0",
+    "pdfkit": "^0.19.1",
+    "pptxgenjs": "^4.0.1",
+    "uuid": "^14.0.1"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.3"
+  }
+}
