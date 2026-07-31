@@ -1,6 +1,6 @@
 import { auth } from './firebase';
 
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 /**
  * Helper to construct headers with Firebase Auth ID token
