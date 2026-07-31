@@ -1,6 +1,6 @@
 .dashboard-header {
   height: 72px;
-  background: #FFFFFF;
+  background: var(--color-card);
   border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
@@ -93,7 +93,7 @@
   height: 8px;
   background: var(--color-danger);
   border-radius: 50%;
-  border: 2px solid white;
+  border: 2px solid var(--color-card);
 }
 
 .notification-dropdown {
@@ -101,7 +101,7 @@
   top: calc(100% + 12px);
   right: 0;
   width: 320px;
-  background: #FFFFFF;
+  background: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
@@ -122,6 +122,7 @@
 .dropdown-header h4 {
   font-size: 0.9375rem;
   font-weight: 700;
+  color: var(--color-text);
 }
 
 .badge {

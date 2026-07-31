@@ -1,5 +1,5 @@
 .how-it-works {
-  background: white;
+  background: var(--color-card);
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
 }
@@ -39,13 +39,13 @@
 .step-number {
   font-size: 3.5rem;
   font-weight: 800;
-  color: rgba(79, 70, 229, 0.08);
+  color: rgba(79, 70, 229, 0.15);
   line-height: 1;
   margin-bottom: 16px;
 }
 
 .step-card:hover .step-number {
-  color: rgba(79, 70, 229, 0.15);
+  color: rgba(79, 70, 229, 0.3);
 }
 
 .step-icon {

@@ -46,7 +46,7 @@
 
 /* Settings Navigation Tabs */
 .settings-nav {
-  background: #FFFFFF;
+  background: var(--color-card);
   border-radius: var(--radius);
   padding: 12px;
   box-shadow: var(--shadow-sm);
@@ -89,7 +89,7 @@
 
 /* Settings Section Card */
 .settings-section-card {
-  background: #FFFFFF;
+  background: var(--color-card);
   border-radius: var(--radius);
   padding: 36px;
   box-shadow: var(--shadow-md);

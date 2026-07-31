@@ -23,7 +23,7 @@
 .auth-card {
   width: 100%;
   max-width: 440px;
-  background: #FFFFFF;
+  background: var(--color-card);
   border-radius: var(--radius);
   padding: 40px 36px;
   box-shadow: var(--shadow-lg);
@@ -113,7 +113,7 @@
   padding: 12px 16px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
-  background: #FFFFFF;
+  background: var(--color-card);
   font-size: 0.9375rem;
   color: var(--color-text);
   transition: var(--transition);
@@ -199,7 +199,7 @@
 
 .btn-google {
   width: 100%;
-  background: #FFFFFF;
+  background: var(--color-card);
   border: 1px solid var(--color-border);
   color: var(--color-text);
   font-weight: 600;
@@ -214,7 +214,7 @@
 
 .btn-google:hover {
   background: var(--color-bg);
-  border-color: #D1D5DB;
+  border-color: var(--color-border);
   transform: translateY(-1px);
 }
 
