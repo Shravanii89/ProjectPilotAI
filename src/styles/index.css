@@ -22,9 +22,27 @@
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+[data-theme="dark"] {
+  --color-bg: #0F172A;
+  --color-card: #1E293B;
+  --color-primary: #6366F1;
+  --color-primary-hover: #4F46E5;
+  --color-secondary: #8B5CF6;
+  --color-accent: #38BDF8;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-text: #F8FAFC;
+  --color-subtext: #94A3B8;
+  --color-border: #334155;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
-body { font-family: var(--font-family); color: var(--color-text); background: var(--color-bg); line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { font-family: var(--font-family); color: var(--color-text); background: var(--color-bg); line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transition: background-color 0.3s ease, color 0.3s ease; }
 a { text-decoration: none; color: inherit; }
 ul, ol { list-style: none; }
 img, video { max-width: 100%; display: block; }
@@ -47,6 +65,41 @@ input, textarea { font: inherit; border: none; outline: none; }
 
 .card { background: var(--color-card); border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-sm); border: 1px solid var(--color-border); transition: var(--transition); }
 .card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+
+/* Dark Mode Global Overrides */
+[data-theme="dark"] .dashboard-sidebar,
+[data-theme="dark"] .dashboard-header,
+[data-theme="dark"] .settings-nav,
+[data-theme="dark"] .settings-section-card,
+[data-theme="dark"] .history-card,
+[data-theme="dark"] .analyze-card,
+[data-theme="dark"] .report-modal,
+[data-theme="dark"] .auth-card,
+[data-theme="dark"] .recent-table-card,
+[data-theme="dark"] .chart-card,
+[data-theme="dark"] .metric-card {
+  background-color: var(--color-card) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background-color: var(--color-bg) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+[data-theme="dark"] .history-table th,
+[data-theme="dark"] .history-table td {
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+[data-theme="dark"] .navbar.scrolled {
+  background: rgba(15, 23, 42, 0.9) !important;
+}
 
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--color-bg); }

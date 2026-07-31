@@ -24,11 +24,12 @@ function Settings() {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
 
-  // Theme State
-  const [themeMode, setThemeMode] = useState('light') // 'light' | 'dark'
+  // Theme State (initialized from localStorage)
+  const [themeMode, setThemeMode] = useState(() => {
+    return localStorage.getItem('projectpilot_theme') || 'light'
+  })
 
   // Notifications State
-  const [notifyEmail, setNotifyEmail] = useState(true)
   const [notifyAnalysis, setNotifyAnalysis] = useState(true)
   const [notifySecurity, setNotifySecurity] = useState(true)
   const [notifyMarketing, setNotifyMarketing] = useState(false)
@@ -36,6 +37,13 @@ function Settings() {
   // Modal & Toast State
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [toast, setToast] = useState('')
+
+  // Update theme on document root & save to localStorage whenever themeMode changes
+  useEffect(() => {
+    console.log(`[Theme Manager] Applying theme mode: "${themeMode}"`)
+    document.documentElement.setAttribute('data-theme', themeMode)
+    localStorage.setItem('projectpilot_theme', themeMode)
+  }, [themeMode])
 
   useEffect(() => {
     if (user) {
@@ -235,7 +243,6 @@ function Settings() {
                     Manage your email address, password, and connected OAuth providers.
                   </p>
 
-                  {/* Connected Google Account */}
                   <div className="form-group" style={{ marginBottom: '24px' }}>
                     <label className="form-label">Connected OAuth Accounts</label>
                     <div className="connected-account-card">
@@ -332,7 +339,7 @@ function Settings() {
                   <div className="toggle-row">
                     <div>
                       <div className="toggle-info-title">Sleek Dark Mode</div>
-                      <div className="toggle-info-sub">Dark ambient palette for high contrast night usage</div>
+                      <div className="toggle-info-sub">Dark ambient palette (#0F172A) for night usage</div>
                     </div>
                     <label className="switch">
                       <input
@@ -341,7 +348,7 @@ function Settings() {
                         checked={themeMode === 'dark'}
                         onChange={() => {
                           setThemeMode('dark')
-                          showFeedback('Applied Dark theme mode.')
+                          showFeedback('Applied Sleek Dark theme mode.')
                         }}
                       />
                       <span className="slider"></span>

@@ -5,6 +5,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App'
 import './styles/index.css'
 
+// Initialise saved theme mode on startup
+const savedTheme = localStorage.getItem('projectpilot_theme') || 'light'
+document.documentElement.setAttribute('data-theme', savedTheme)
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
