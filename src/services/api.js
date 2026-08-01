@@ -6,7 +6,7 @@ import { auth } from './firebase';
  */
 const BASE_URL = import.meta.env.VITE_API_URL ||
   (import.meta.env.PROD
-    ? 'https://projectpilotai-sw4e.onrender.com/api'
+    ? 'https://projectpilot-api-4fyg.onrender.com/api'
     : 'http://localhost:5000/api');
 
 // Log the resolved API URL in development for debugging
