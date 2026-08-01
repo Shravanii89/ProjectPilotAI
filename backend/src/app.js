@@ -12,28 +12,44 @@ const { AppError } = require('./utils');
 // ── Create Express app ──
 const app = express();
 
-// ── Security headers ──
-app.use(helmet());
-
-// ── CORS ──
+// ── Parse allowed CORS origins ──
 const allowedOrigins = config.cors.origin
   .split(',')
   .map((o) => o.trim())
   .filter(Boolean);
 
+console.log('[CORS] Allowed origins:', allowedOrigins);
+
+// ── CORS configuration ──
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, Render health checks)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`[CORS] Blocked request from origin: ${origin}`);
+      // Return false instead of Error — still blocks but doesn't crash the response
+      callback(null, false);
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+};
+
+// ── 1. CORS must come FIRST — before helmet and everything else ──
+app.use(cors(corsOptions));
+
+// ── 2. Handle preflight OPTIONS requests explicitly ──
+app.options('*', cors(corsOptions));
+
+// ── 3. Security headers — configured to NOT interfere with CORS ──
 app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (mobile apps, curl, etc.)
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS: origin ${origin} not allowed`));
-      }
-    },
-    credentials: config.cors.credentials,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+  helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    crossOriginOpenerPolicy: { policy: 'unsafe-none' },
+    crossOriginEmbedderPolicy: false,
   })
 );
 
