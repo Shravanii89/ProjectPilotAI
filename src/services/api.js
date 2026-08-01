@@ -1,6 +1,18 @@
 import { auth } from './firebase';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+/**
+ * API Base URL Resolution
+ * Priority: VITE_API_URL env var → production Render URL → localhost dev fallback
+ */
+const BASE_URL = import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD
+    ? 'https://projectpilotai-sw4e.onrender.com/api'
+    : 'http://localhost:5000/api');
+
+// Log the resolved API URL in development for debugging
+if (import.meta.env.DEV) {
+  console.log('[API Service] BASE_URL resolved to:', BASE_URL);
+}
 
 /**
  * Helper to construct headers with Firebase Auth ID token
@@ -31,25 +43,34 @@ async function fetchApi(endpoint, options = {}) {
   const headers = await getAuthHeaders(options.headers || {});
   const url = `${BASE_URL}${endpoint}`;
 
-  const res = await fetch(url, {
-    ...options,
-    headers,
-  });
+  try {
+    const res = await fetch(url, {
+      ...options,
+      headers,
+    });
 
-  const contentType = res.headers.get('content-type') || '';
-  if (contentType.includes('application/json')) {
-    const json = await res.json();
-    if (!res.ok) {
-      throw new Error(json.message || `API request failed with status ${res.status}`);
+    const contentType = res.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.message || `API request failed with status ${res.status}`);
+      }
+      return json.data !== undefined ? json.data : json;
     }
-    return json.data !== undefined ? json.data : json;
-  }
 
-  if (!res.ok) {
-    throw new Error(`API request failed with status ${res.status}`);
-  }
+    if (!res.ok) {
+      throw new Error(`API request failed with status ${res.status}`);
+    }
 
-  return res;
+    return res;
+  } catch (err) {
+    // Distinguish network errors from API errors
+    if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
+      console.error(`[API Service] Network error calling ${url}. Is the backend running?`);
+      throw new Error('Unable to reach the server. Please check your connection and try again.');
+    }
+    throw err;
+  }
 }
 
 export const apiService = {
@@ -92,21 +113,26 @@ export const apiService = {
     const headers = await getAuthHeaders();
     delete headers['Content-Type']; // Let fetch handle binary stream
 
-    const res = await fetch(`${BASE_URL}/report/${id}/pdf`, { headers });
-    if (!res.ok) {
-      throw new Error(`Failed to generate PDF (HTTP ${res.status}).`);
-    }
+    try {
+      const res = await fetch(`${BASE_URL}/report/${id}/pdf`, { headers });
+      if (!res.ok) {
+        throw new Error(`Failed to generate PDF (HTTP ${res.status}).`);
+      }
 
-    const blob = await res.blob();
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `ProjectPilot_Report_${id}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(link);
-    console.log('[API Service] ✅ PDF downloaded successfully.');
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `ProjectPilot_Report_${id}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+      console.log('[API Service] ✅ PDF downloaded successfully.');
+    } catch (err) {
+      console.error('[API Service] PDF download failed:', err.message);
+      throw new Error('Failed to download PDF. Please try again.');
+    }
   },
 
   downloadPpt: async (id) => {
@@ -114,21 +140,26 @@ export const apiService = {
     const headers = await getAuthHeaders();
     delete headers['Content-Type'];
 
-    const res = await fetch(`${BASE_URL}/report/${id}/ppt`, { headers });
-    if (!res.ok) {
-      throw new Error(`Failed to generate Pitch Deck (HTTP ${res.status}).`);
-    }
+    try {
+      const res = await fetch(`${BASE_URL}/report/${id}/ppt`, { headers });
+      if (!res.ok) {
+        throw new Error(`Failed to generate Pitch Deck (HTTP ${res.status}).`);
+      }
 
-    const blob = await res.blob();
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `ProjectPilot_PitchDeck_${id}.pptx`;
-    document.body.appendChild(link);
-    link.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(link);
-    console.log('[API Service] ✅ Pitch Deck (.pptx) downloaded successfully.');
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `ProjectPilot_PitchDeck_${id}.pptx`;
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+      console.log('[API Service] ✅ Pitch Deck (.pptx) downloaded successfully.');
+    } catch (err) {
+      console.error('[API Service] Pitch Deck download failed:', err.message);
+      throw new Error('Failed to download Pitch Deck. Please try again.');
+    }
   },
 
   // ── Direct URL Fallbacks ──

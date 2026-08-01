@@ -10,7 +10,8 @@ const config = {
   databaseUrl: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/projectpilot_db?schema=public',
 
   cors: {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+    // Support comma-separated origins; always include localhost for dev
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173,http://localhost:3000',
     credentials: true,
   },
 
